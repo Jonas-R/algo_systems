@@ -28,6 +28,17 @@ public class Graph {
         }
     }
     
+    public void remove_vertex(String id) {
+        nodes.remove(id);
+        for (Node node : nodes.values()) {
+            node.removeEdge(id);
+        }
+    }
+    
+    public void remove_edge(String start_node, String end_node) {
+        nodes.get(start_node).removeEdge(end_node);
+    }
+    
     public Collection<Node> getNodes() {
     	return nodes.values();
     }

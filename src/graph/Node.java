@@ -28,6 +28,14 @@ public class Node {
     public int getDegree() {
     	return edges.size();
     }
+    
+    public void removeEdge(String id) {
+        for (SimpleEntry<Node, String> edge : edges) {
+            if (edge.getKey().id.equals(id)) {
+                edges.remove(edge);
+            }
+        }
+    }  
 
     /* Automatically generated hashCode and equals implementation */
 	@Override
