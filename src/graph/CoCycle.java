@@ -1,21 +1,27 @@
 package graph;
 
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CoCycle {
-    public static int[][] calculateCoCycleBase(Graph G) {
-        Map<String, Integer> edgeIds = getEdgeIds(G);
-        Map<String, Integer> nodeIds = getNodeIds(G);
+    public Map<String, Integer> edgeIds;
+    public Map<String, Integer> nodeIds;
+    public Map<Integer, SimpleEntry<String, String>> edgeNumbers;
+    
+    public CoCycle(Graph G) {
+        edgeIds = getEdgeIds(G);
+        nodeIds = getNodeIds(G);
+    }
+    
+    public int[][] calculateCoCycleBase(Graph G) {
         
         int[][] base = new int[nodeIds.values().size()][edgeIds.size()];
         for (int[] vector : base) {
             vector = new int[edgeIds.size()];
         }
 
-        System.out.println(edgeIds.size());
-        System.out.println(nodeIds.size());
         for (Node node : G.getNodes()) {        
             for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
                 base[nodeIds.get(node.id)][edgeIds.get(edge.getValue())] = 1;
@@ -26,20 +32,22 @@ public class CoCycle {
         return base;
     }
     
-    public static Map<String, Integer> getEdgeIds(Graph G) {
-        Map<String, Integer> edgeIds = new HashMap<>();
+    private Map<String, Integer> getEdgeIds(Graph G) {
+        edgeIds = new HashMap<>();
+        edgeNumbers = new HashMap<>();
         int i = 0;
         for (Node node : G.getNodes()) {
             for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
                 edgeIds.put(edge.getValue(), i);
+                edgeNumbers.put(i, new SimpleEntry<>(node.id, edge.getKey().id));
                 i++;
             }
         }
         return edgeIds;
     }
     
-    public static Map<String, Integer> getNodeIds(Graph G) {
-        Map<String, Integer> nodeIds = new HashMap<>();
+    private Map<String, Integer> getNodeIds(Graph G) {
+        nodeIds = new HashMap<>();
         int i = 0;
         for (Node node : G.getNodes()) {
             nodeIds.put(node.id, i);

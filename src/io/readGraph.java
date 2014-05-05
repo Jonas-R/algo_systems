@@ -56,7 +56,6 @@ public class readGraph {
                 i++;
             }
         }
-        System.out.println(g);
         return g;
     }
 }

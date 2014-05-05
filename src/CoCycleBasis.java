@@ -1,9 +1,14 @@
 
 import graph.CoCycle;
 import graph.Graph;
+import graph.Node;
 import io.readGraph;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -11,22 +16,33 @@ public class CoCycleBasis {
     public static void main(String[] args) {
         Graph G = readGraph.readAdjacencyListGraph("testgraph_adjacency.txt");
         
-        int[][] base = CoCycle.calculateCoCycleBase(G);
+        CoCycle cc = new CoCycle(G);
         
-        for (int i = 0; i < base.length; i++) {
-            for (int j = 0; j < base[0].length; j++) {
-                System.out.print(base[i][j] + "\t");
+        int[][] base = cc.calculateCoCycleBase(G);
+//        
+//        for (int i = 0; i < base.length; i++) {
+//            for (int j = 0; j < base[0].length; j++) {
+//                System.out.print(base[i][j] + "\t");
+//            }
+//            System.out.println("");
+//        }
+        
+        ArrayList<ArrayList<Integer>> permutations = permutations(new ArrayList<>(Arrays.asList(-1,0,1)), base.length - 1);
+        System.out.println(permutations.size());
+        Set<ArrayList<Integer>> cocycles = new HashSet<>();
+        for (ArrayList<Integer> permutation : permutations) {
+            ArrayList<Integer> cycle = linearCombination(base, permutation);
+            boolean iscycle = true;
+            for (int i = 0; i < cycle.size(); i++) {
+                int val = cycle.get(i);
+                if (val != 0 && val != 1 && val != -1) {
+                    iscycle = false;
+                }
             }
-            System.out.println("");
-        }
-        
-        ArrayList<ArrayList<Integer>> permutations = permutations(new ArrayList<>(Arrays.asList(-1,0,1)), base.length);
-
-        //for (ArrayList<Integer> permutation : permutations) {
-        for (int i = 0; i < 2; i++) {
-            System.out.println(new ArrayList<>(Arrays.asList(base[i])));
-            System.out.println(permutations.get(i));
-            System.out.println(linearCombination(base, permutations.get(i)));
+            if (iscycle) {
+                    System.out.println(asAdjacencyList(cycle, cc));
+                    cocycles.add(cycle);
+            }
         }
     }
     
@@ -78,6 +94,32 @@ public class CoCycleBasis {
             }
             return permutations_helper(tmp, input, k - 1);
         }
+    }
+    
+    public static String asAdjacencyList(ArrayList<Integer> vector, CoCycle cc) {
+        SortedMap<String, ArrayList<String>> adjacency = new TreeMap<>();
+        
+        for (int i = 0; i < vector.size(); i++) {
+            if (vector.get(i) == 1 || vector.get(i) == -1) {
+                SimpleEntry<String, String> edge = cc.edgeNumbers.get(i);
+                if (adjacency.containsKey(edge.getKey())) {
+                    adjacency.put(edge.getKey(), new ArrayList<String>());
+                }
+                adjacency.get(edge.getKey()).add(edge.getValue());
+            }
+        }
+ 
+        StringBuilder sb = new StringBuilder();
+        for(String key : adjacency.keySet()) {
+            sb.append(key).append(" -> ");
+            String delim = "";
+            for (String edge : adjacency.get(key)) {
+                sb.append(edge).append(delim);
+                delim = ", ";
+            }
+        }
+        
+        return sb.toString();
     }
 
 }
