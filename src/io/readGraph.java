@@ -31,4 +31,32 @@ public class readGraph {
         }
         return g;
     }
+    
+    public static Graph readAdjacencyListGraph(String filename) {
+        List<String> lines = FileUtils.readLines(filename);
+        
+        Graph g = new Graph(true);
+        HashSet<String> processed_nodes = new HashSet<>();
+        
+        int i = 0;
+        for (String line : lines) {
+            String[] tokens = line.split("->");
+            tokens[0] = tokens[0].trim();
+            if (!processed_nodes.contains(tokens[0])) {
+                g.add_vertex(tokens[0]);      
+                processed_nodes.add(tokens[0]);
+            } 
+            for (String id : tokens[1].split(",")) {
+                id = id.trim();
+                if (!processed_nodes.contains(id)) {
+                    g.add_vertex(id);      
+                    processed_nodes.add(id);
+                } 
+                g.add_edge(tokens[0], id, Integer.toString(i));
+                i++;
+            }
+        }
+        System.out.println(g);
+        return g;
+    }
 }

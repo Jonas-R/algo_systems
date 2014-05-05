@@ -7,7 +7,7 @@ import java.util.AbstractMap.SimpleEntry;
 public class Node {
     public String id;
     public double weight;
-    private Set<SimpleEntry<Node, String>> edges;
+    public Set<SimpleEntry<Node, String>> edges;
     
     public Node(String id, double weight) {
     	this.id = id;

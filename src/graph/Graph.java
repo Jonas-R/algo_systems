@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,4 +43,17 @@ public class Graph {
     public Collection<Node> getNodes() {
     	return nodes.values();
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Node node : getNodes()) {
+            sb.append(node.id).append(" -> ");
+            for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
+                sb.append(edge.getKey().id).append(", ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    } 
 }
