@@ -58,4 +58,29 @@ public class readGraph {
         }
         return g;
     }
+    
+    public static Graph readAdjacenceGraph(String filename) {
+        List<String> lines = FileUtils.readLines(filename);
+
+        Graph g = new Graph(false);
+        HashSet<String> processed_nodes = new HashSet<>();
+
+        for (String line : lines) {
+            String[] tokens = line.split("( -- )|(, )");
+            if (!processed_nodes.contains(tokens[0])) {
+                g.add_vertex(tokens[0]);
+                processed_nodes.add(tokens[0]);
+            }
+            for (int i = 1; i < tokens.length; i++) {
+                if (tokens[0].compareTo(tokens[i]) <= 0) {
+                    if (!processed_nodes.contains(tokens[i])) {
+                        g.add_vertex(tokens[i]);
+                        processed_nodes.add(tokens[i]);
+                    }
+                    g.add_edge(tokens[0], tokens[i], "");
+                }
+            }
+        }
+        return g;
+    }
 }

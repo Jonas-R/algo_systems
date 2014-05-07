@@ -36,6 +36,14 @@ public class Node {
             }
         }
     }  
+    
+    public Set<Node> getAdjacent(){
+        Set<Node> adjacent = new HashSet<>();
+        for(SimpleEntry<Node, String> edge : edges){
+            adjacent.add(edge.getKey());
+        }
+        return adjacent;
+    }
 
     /* Automatically generated hashCode and equals implementation */
 	@Override

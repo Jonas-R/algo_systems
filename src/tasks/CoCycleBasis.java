@@ -1,12 +1,12 @@
+package tasks;
+
 
 import graph.CoCycle;
 import graph.Graph;
-import graph.Node;
 import io.readGraph;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -14,21 +14,24 @@ import java.util.TreeMap;
 
 public class CoCycleBasis {
     public static void main(String[] args) {
-        Graph G = readGraph.readAdjacencyListGraph("testgraph_adjacency.txt");
+        Graph G = readGraph.readAdjacencyListGraph(args[2]);
         
         CoCycle cc = new CoCycle(G);
         
         int[][] base = cc.calculateCoCycleBase(G);
-//        
-//        for (int i = 0; i < base.length; i++) {
-//            for (int j = 0; j < base[0].length; j++) {
-//                System.out.print(base[i][j] + "\t");
-//            }
-//            System.out.println("");
-//        }
+        
+        for (int i = 0; i < base.length - 1; i++) {
+            ArrayList<Integer> tmp = new ArrayList<>();
+            for (int j = 0; j < base[i].length; j++) {
+                tmp.add(base[i][j]);
+            }
+            System.out.println("Basisvektor " + (i+1) + ":");
+            System.out.println(asAdjacencyList(tmp, cc));
+            System.out.println("");
+        }
         
         ArrayList<ArrayList<Integer>> permutations = permutations(new ArrayList<>(Arrays.asList(-1,0,1)), base.length - 1);
-        System.out.println(permutations.size());
+        
         Set<ArrayList<Integer>> cocycles = new HashSet<>();
         for (ArrayList<Integer> permutation : permutations) {
             ArrayList<Integer> cycle = linearCombination(base, permutation);
@@ -40,8 +43,8 @@ public class CoCycleBasis {
                 }
             }
             if (iscycle) {
+                    //System.out.println();
                     System.out.println(asAdjacencyList(cycle, cc));
-                    cocycles.add(cycle);
             }
         }
     }
@@ -102,7 +105,7 @@ public class CoCycleBasis {
         for (int i = 0; i < vector.size(); i++) {
             if (vector.get(i) == 1 || vector.get(i) == -1) {
                 SimpleEntry<String, String> edge = cc.edgeNumbers.get(i);
-                if (adjacency.containsKey(edge.getKey())) {
+                if (!adjacency.containsKey(edge.getKey())) {
                     adjacency.put(edge.getKey(), new ArrayList<String>());
                 }
                 adjacency.get(edge.getKey()).add(edge.getValue());
@@ -114,9 +117,10 @@ public class CoCycleBasis {
             sb.append(key).append(" -> ");
             String delim = "";
             for (String edge : adjacency.get(key)) {
-                sb.append(edge).append(delim);
+                sb.append(delim).append(edge);
                 delim = ", ";
             }
+            sb.append("\n");
         }
         
         return sb.toString();
