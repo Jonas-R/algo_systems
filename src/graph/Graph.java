@@ -44,6 +44,10 @@ public class Graph {
     	return nodes.values();
     }
     
+    public Node getNode(String id) {
+        return nodes.get(id);
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

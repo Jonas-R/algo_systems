@@ -18,7 +18,7 @@ public class SCC {
     public static void main(String[] args) {
         if (args.length == 5) {
 
-            Graph G = readGraph.readAdjacencyListGraph("testgraph_ue05.txt");
+            Graph G = readGraph.readAdjacencyListGraph(args[2]);
 
             TreeMap<Integer, ArrayList<String>> output_map = calculateSCC(G);
             StringBuilder output = new StringBuilder();

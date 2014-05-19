@@ -44,6 +44,11 @@ public class Node {
         }
         return adjacent;
     }
+    
+    @Override
+    public String toString() {
+        return id;
+    }
 
     /* Automatically generated hashCode and equals implementation */
 	@Override
