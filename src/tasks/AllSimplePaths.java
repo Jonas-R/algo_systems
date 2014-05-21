@@ -1,5 +1,6 @@
 package tasks;
 
+import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import io.readGraph;
@@ -17,34 +18,31 @@ public class AllSimplePaths {
     public static void main(String[] args) {
 
         Graph G = readGraph.readAdjacencyListGraph("testgraph_ue05.txt");
-        getAllSimplePaths(G.getNode("g"), G.getNode("a"), G);
+        getAllSimplePaths(G.getNode("c"), G.getNode("e"), G);
 
     }
 
     
     public static ArrayList<ArrayList<Node>> getAllSimplePaths(Node start_node, Node end_node, Graph G) {
-        Set<Node> visited = new HashSet<>();
-        visited.add(start_node);
         ArrayList<Node> cur_path = new ArrayList<>();
         cur_path.add(start_node);
         
-        ArrayList<ArrayList<Node>> paths =  getAllSimplePaths_helper(start_node, end_node, G, visited, new ArrayList<ArrayList<Node>>(), cur_path);
+        ArrayList<ArrayList<Node>> paths =  getAllSimplePaths_helper(start_node, end_node, G, new ArrayList<ArrayList<Node>>(), cur_path);
         System.out.println(paths);
         return paths;
     }
     
-    private static ArrayList<ArrayList<Node>> getAllSimplePaths_helper(Node cur_node, Node end_node, Graph G, Set<Node> visited, ArrayList<ArrayList<Node>> paths, ArrayList<Node> cur_path) {        
+    private static ArrayList<ArrayList<Node>> getAllSimplePaths_helper(Node cur_node, Node end_node, Graph G, ArrayList<ArrayList<Node>> paths, ArrayList<Node> cur_path) {        
         
-        for (SimpleEntry<Node, String> edge : cur_node.edges) {
-            if (edge.getKey().id.equals(end_node.id)) {
+        for (Edge edge : cur_node.edges) {
+            if (edge.target_node.id.equals(end_node.id)) {
                 ArrayList<Node> tmp = (ArrayList<Node>) cur_path.clone();
                 tmp.add(end_node);
                 paths.add(tmp);
-            } else if (!visited.contains(edge.getKey())) {
-                visited.add(edge.getKey());
+            } else if (!cur_path.contains(edge.target_node)) {
                 ArrayList<Node> tmp = (ArrayList<Node>) cur_path.clone();
-                tmp.add(edge.getKey());
-                paths = getAllSimplePaths_helper(edge.getKey(), end_node, G, visited, paths, tmp);
+                tmp.add(edge.target_node);
+                paths = getAllSimplePaths_helper(edge.target_node, end_node, G, paths, tmp);
             }
         }
         return paths;

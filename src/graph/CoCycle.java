@@ -23,9 +23,9 @@ public class CoCycle {
         }
 
         for (Node node : G.getNodes()) {        
-            for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
-                base[nodeIds.get(node.id)][edgeIds.get(edge.getValue())] = 1;
-                base[nodeIds.get(edge.getKey().id)][edgeIds.get(edge.getValue())] = -1;
+            for (Edge edge : node.edges) {
+                base[nodeIds.get(node.id)][edgeIds.get(edge.annotation)] = 1;
+                base[nodeIds.get(edge.target_node.id)][edgeIds.get(edge.annotation)] = -1;
             }
         }
         
@@ -37,9 +37,9 @@ public class CoCycle {
         edgeNumbers = new HashMap<>();
         int i = 0;
         for (Node node : G.getNodes()) {
-            for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
-                edgeIds.put(edge.getValue(), i);
-                edgeNumbers.put(i, new SimpleEntry<>(node.id, edge.getKey().id));
+            for (Edge edge : node.edges) {
+                edgeIds.put(edge.annotation, i);
+                edgeNumbers.put(i, new SimpleEntry<>(node.id, edge.target_node.id));
                 i++;
             }
         }

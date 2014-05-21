@@ -1,6 +1,5 @@
 package graph;
 
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,11 +14,7 @@ public class Graph {
     }
     
     public void add_vertex(String id) {
-        nodes.put(id, new Node(id, 1.0));
-    }
-    
-    public void add_vertex(String id, double weight) {
-        nodes.put(id, new Node(id, weight));
+        nodes.put(id, new Node(id));
     }
     
     public void add_edge(String start_node, String end_node, String annotation) {
@@ -53,8 +48,8 @@ public class Graph {
         StringBuilder sb = new StringBuilder();
         for (Node node : getNodes()) {
             sb.append(node.id).append(" -> ");
-            for (AbstractMap.SimpleEntry<Node, String> edge : node.edges) {
-                sb.append(edge.getKey().id).append(", ");
+            for (Edge edge : node.edges) {
+                sb.append(edge.target_node.id).append(", ");
             }
             sb.append("\n");
         }

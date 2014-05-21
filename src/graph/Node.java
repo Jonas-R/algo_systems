@@ -2,27 +2,27 @@ package graph;
 
 import java.util.Set;
 import java.util.HashSet;
-import java.util.AbstractMap.SimpleEntry;
 
 public class Node {
     public String id;
-    public double weight;
-    public Set<SimpleEntry<Node, String>> edges;
+    public Set<Edge> edges;
     
-    public Node(String id, double weight) {
+    public Node(String id) {
     	this.id = id;
-        this.weight = weight;
         this.edges = new HashSet<>();
     }
     
-    public Node(String id, double weight, Set<SimpleEntry<Node, String>> edges) {
+    public Node(String id, Set<Edge> edges) {
     	this.id = id;
-        this.weight = weight;
         this.edges = edges;
     }
     
     public void add_edge(Node end_node, String annotation) {
-        edges.add(new SimpleEntry<>(end_node, annotation));
+        edges.add(new Edge(this, end_node, annotation, 1.0));
+    }
+    
+    public void add_edge(Node end_node, String annotation, double weight) {
+        edges.add(new Edge(this, end_node, annotation, weight));
     }
     
     public int getDegree() {
@@ -30,8 +30,8 @@ public class Node {
     }
     
     public void removeEdge(String id) {
-        for (SimpleEntry<Node, String> edge : edges) {
-            if (edge.getKey().id.equals(id)) {
+        for (Edge edge : edges) {
+            if (edge.target_node.id.equals(id)) {
                 edges.remove(edge);
             }
         }
@@ -39,8 +39,8 @@ public class Node {
     
     public Set<Node> getAdjacent(){
         Set<Node> adjacent = new HashSet<>();
-        for(SimpleEntry<Node, String> edge : edges){
-            adjacent.add(edge.getKey());
+        for(Edge edge : edges){
+            adjacent.add(edge.target_node);
         }
         return adjacent;
     }

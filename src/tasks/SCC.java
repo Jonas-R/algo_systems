@@ -1,9 +1,9 @@
 package tasks;
 
+import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import io.readGraph;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,9 +79,9 @@ public class SCC {
 
     public static int dfs1(Node node, Set<String> R, int N, Map<Integer, Node> phi) {
         R.add(node.id);
-        for (SimpleEntry<Node, String> edge : node.edges) {
-            if (!R.contains(edge.getKey().id)) {
-                N = dfs1(edge.getKey(), R, N, phi);
+        for (Edge edge : node.edges) {
+            if (!R.contains(edge.target_node.id)) {
+                N = dfs1(edge.target_node, R, N, phi);
             }
         }
         N++;
@@ -92,8 +92,8 @@ public class SCC {
     public static void dfs2(Graph G, Node node, int K, Map<String, Integer> components, Set<String> R) {
         R.add(node.id);
         for (Node other_node : G.getNodes()) {
-            for (SimpleEntry<Node, String> edge : other_node.edges) {
-                if (!R.contains(other_node.id) && edge.getKey().id.equals(node.id)) {
+            for (Edge edge : other_node.edges) {
+                if (!R.contains(other_node.id) && edge.target_node.id.equals(node.id)) {
                     dfs2(G, other_node, K, components, R);
                 }
             }
