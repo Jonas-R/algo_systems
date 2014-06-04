@@ -42,7 +42,7 @@ public class ShortestPath {
         
         while (!Q.isEmpty()) {
             NodeWithDistance min_node = Q.remove();
-            if (min_node.distance == Integer.MAX_VALUE) break;
+            //if (min_node.distance == Integer.MAX_VALUE) break;
             
             for (Edge edge : min_node.edges) {
                 double alt = min_node.distance + edge.weight;

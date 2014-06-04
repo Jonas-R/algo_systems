@@ -24,6 +24,13 @@ public class Graph {
         }
     }
     
+    public void add_edge(Edge edge) {
+        nodes.get(edge.start_node.id).add_edge(edge);
+        if (!is_directed) {
+            nodes.get(edge.target_node.id).add_edge(nodes.get(edge.start_node.id), edge.annotation, edge.weight);
+        }
+    }
+    
     public void remove_vertex(String id) {
         nodes.remove(id);
         for (Node node : nodes.values()) {

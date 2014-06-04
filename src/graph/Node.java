@@ -25,6 +25,10 @@ public class Node {
         edges.add(new Edge(this, end_node, annotation, weight));
     }
     
+    public void add_edge(Edge edge) {
+        edges.add(edge);
+    }
+    
     public int getDegree() {
     	return edges.size();
     }
