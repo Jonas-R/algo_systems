@@ -2,6 +2,7 @@ package graph;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Graph {
@@ -18,9 +19,16 @@ public class Graph {
     }
     
     public void add_edge(String start_node, String end_node, String annotation) {
-        nodes.get(start_node).add_edge(nodes.get(end_node), annotation);
+        nodes.get(start_node).add_edge(nodes.get(end_node), annotation, 1.0);
         if (!is_directed) {
-            nodes.get(end_node).add_edge(nodes.get(start_node), annotation);
+            nodes.get(end_node).add_edge(nodes.get(start_node), annotation, 1.0);
+        }
+    }
+    
+     public void add_edge(String start_node, String end_node, String annotation, double weight) {
+        nodes.get(start_node).add_edge(nodes.get(end_node), annotation, weight);
+        if (!is_directed) {
+            nodes.get(end_node).add_edge(nodes.get(start_node), annotation, weight);
         }
     }
     
@@ -48,6 +56,23 @@ public class Graph {
     
     public Node getNode(String id) {
         return nodes.get(id);
+    }
+    
+    public Graph getSubgraph(List<String> node_ids) {
+        Graph G_ = new Graph(this.is_directed);
+        for (String id : node_ids) {
+            G_.add_vertex(id);
+        }
+        
+        for (String id : node_ids) {
+            for (Edge edge : this.getNode(id).edges) {
+                if (node_ids.contains(edge.target_node.id)) {
+                    G_.add_edge(id, edge.target_node.id, edge.annotation, edge.weight);   
+                }
+            }
+        }
+        
+        return G_;
     }
     
     @Override

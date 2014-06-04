@@ -11,15 +11,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import utils.FileUtils;
 
 public class ShortestPath {
     public int distance;
     public List<NodeWithDistance> shortest_path;
     
     public static void main(String[] args) {
-        Graph G = readGraph.readDipTabGraph("/home/r/raedle/Algo_Netze/Li2004a.tab");
-        ShortestPath sp = new ShortestPath(G.getNode("26265N"), G.getNode("24348N"), G);
-        System.out.println("");
+        Graph G = readGraph.readDipTabGraph(args[2]);
+        ShortestPath sp = new ShortestPath(G.getNode(args[6]), G.getNode(args[8]), G);
+        
+        StringBuilder output = new StringBuilder();
+        output.append(sp.shortest_path.size()).append("\n").append(sp.shortest_path);
+        if (!args[4].endsWith("/")) {
+            args[4] += "/";
+        }
+        FileUtils.writeString(args[4] + "shortest_path.txt", output.toString());
     }
     
     public ShortestPath(Node start, Node end, Graph G) {
