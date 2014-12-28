@@ -1,4 +1,4 @@
 algo_systems
 ============
 
-algorithmic bioinformatics: systems and networks
+Exercises for algorithmic bioinformatics: systems and networks
